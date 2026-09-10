@@ -28,6 +28,24 @@ export function dentroApp() {
   return !!ponte();
 }
 
+/**
+ * La versione di QUESTA pagina, scritta nell'HTML al momento della build.
+ *
+ * Serve alla versione web (iPhone): lì non c'è nessun PackageManager a cui
+ * chiedere, e senza questo la schermata Aggiornamento diceva «non lo so» —
+ * proprio dove si va a guardare per capire se l'aggiornamento è arrivato.
+ *
+ * NON entra dentro `versioneInstallata()`, ed è la cosa importante: quella
+ * governa il flusso di aggiornamento dell'APK, e se rispondesse anche fuori
+ * da Android la fascia «C'è la versione X» comparirebbe pure su iPhone,
+ * offrendo di installare un pacchetto Android.
+ */
+export function versioneDiQuestaPagina() {
+  const meta = globalThis.document?.querySelector('meta[name="versione-app"]');
+  const valore = meta?.content?.trim();
+  return valore && valore !== 'sviluppo' ? valore : null;
+}
+
 /** La versione che gira adesso, chiesta ad Android. */
 export function versioneInstallata() {
   if (installata) return installata;

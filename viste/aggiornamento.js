@@ -2,7 +2,7 @@
 // pulsante per passare da una all'altra senza trasferire file dal computer.
 import { soloData } from '../shared/formato.js';
 import {
-  controlla, disponibile, versioneInstallata, dentroApp,
+  controlla, disponibile, versioneInstallata, versioneDiQuestaPagina, dentroApp,
   puoInstallare, chiediPermesso, installa,
 } from '../aggiornamento.js';
 
@@ -23,7 +23,9 @@ export function render(main, ctx) {
     r.append(e, v);
     return r;
   };
-  testa.appendChild(riga('Versione installata', mia?.versione ?? 'non lo so'));
+  // sull'APK la sa Android; sulla versione web la porta la pagina stessa
+  testa.appendChild(riga('Versione installata',
+    mia?.versione ?? versioneDiQuestaPagina() ?? 'non lo so'));
   main.appendChild(testa);
 
   // Fuori dall'app Android non c'è niente da scaricare: qui la pagina arriva
