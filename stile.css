@@ -1,0 +1,700 @@
+/* Interfaccia del telefono: tutto grande, si usa col pollice e coi guanti. */
+:root {
+  --sfondo: #f1f5f9;
+  --carta: #ffffff;
+  --testo: #0f172a;
+  --tenue: #64748b;
+  --bordo: #e2e8f0;
+  --blu: #1d4ed8;
+  --verde: #15803d;
+  --rosso: #b91c1c;
+  --giallo: #a16207;
+  --barra: #0f172a;
+  --sicura-sotto: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-size: 17px;
+  overscroll-behavior-y: none;
+}
+
+/* --- intestazione --- */
+.testa {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--barra);
+  color: #fff;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.testa h1 { font-size: 19px; margin: 0; font-weight: 700; }
+.testa .stato-rete { font-size: 13px; opacity: .8; }
+.testa .stato-rete.giu { color: #fca5a5; opacity: 1; font-weight: 700; }
+
+/* --- corpo --- */
+main {
+  padding: 14px 14px calc(96px + var(--sicura-sotto));
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* --- barra delle schede in basso --- */
+.schede {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  background: var(--carta);
+  border-top: 1px solid var(--bordo);
+  padding-bottom: var(--sicura-sotto);
+  z-index: 20;
+}
+.schede button {
+  flex: 1 1 0;
+  min-width: 0;
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 10px 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tenue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-family: inherit;
+}
+.schede button .ico { font-size: 22px; line-height: 1; }
+.schede button.attiva { color: var(--blu); }
+
+/* --- pezzi comuni --- */
+.card {
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .06);
+}
+.card.tocca:active { transform: scale(.99); }
+
+.targa {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+.riga { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tenue { color: var(--tenue); font-size: 14px; }
+.grosso { font-size: 24px; font-weight: 800; }
+.verde { color: var(--verde); }
+.rosso { color: var(--rosso); }
+.giallo { color: var(--giallo); }
+
+label { display: block; font-size: 14px; font-weight: 600; color: var(--tenue); margin: 12px 0 5px; }
+
+input, select, textarea {
+  width: 100%;
+  font-size: 18px;
+  font-family: inherit;
+  padding: 13px 12px;
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  background: var(--carta);
+  color: var(--testo);
+}
+input:focus, select:focus, textarea:focus { outline: 3px solid #bfdbfe; border-color: var(--blu); }
+input.targa-input { font-size: 28px; font-weight: 800; letter-spacing: 3px; text-align: center; text-transform: uppercase; }
+
+button.btn {
+  width: 100%;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--blu);
+  color: #fff;
+  margin-top: 12px;
+}
+button.btn:active { filter: brightness(.92); }
+button.btn[disabled] { opacity: .5; }
+button.btn.verde { background: var(--verde); }
+button.btn.rosso { background: var(--rosso); }
+button.btn.chiaro { background: var(--carta); color: var(--testo); border: 1px solid var(--bordo); }
+
+.scelte { display: flex; flex-wrap: wrap; gap: 8px; }
+.scelte button {
+  flex: 1 1 44%;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 10px;
+  border-radius: 12px;
+  border: 2px solid var(--bordo);
+  background: var(--carta);
+  color: var(--testo);
+}
+.scelte button.scelta { border-color: var(--blu); background: #eff6ff; color: var(--blu); }
+
+.vuoto { text-align: center; color: var(--tenue); padding: 40px 10px; }
+.vuoto .faccia { font-size: 44px; display: block; margin-bottom: 10px; }
+
+/* --- accesso col PIN --- */
+.accesso { padding: 40px 22px; max-width: 380px; margin: 0 auto; text-align: center; }
+.accesso .logo { font-size: 56px; }
+.accesso h1 { font-size: 24px; margin: 8px 0 4px; }
+.accesso input {
+  font-size: 34px; text-align: center; letter-spacing: 12px; font-weight: 800; margin-top: 20px;
+}
+
+/* --- foglio che sale dal basso (dettaglio auto) --- */
+.velo {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, .5);
+  display: flex; align-items: flex-end; z-index: 30;
+}
+.foglio {
+  background: var(--sfondo);
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  padding: 8px 16px calc(24px + var(--sicura-sotto));
+}
+.maniglia { width: 44px; height: 5px; border-radius: 3px; background: var(--bordo); margin: 8px auto 14px; }
+
+/* --- avvisi --- */
+.avviso {
+  position: fixed; left: 12px; right: 12px; bottom: calc(90px + var(--sicura-sotto));
+  background: var(--barra); color: #fff; padding: 14px 16px; border-radius: 14px;
+  font-weight: 600; z-index: 40; text-align: center;
+}
+.avviso.ok { background: var(--verde); }
+.avviso.ko { background: var(--rosso); }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sfondo: #0b1220;
+    --carta: #131c2e;
+    --testo: #e2e8f0;
+    --tenue: #94a3b8;
+    --bordo: #26344b;
+    --barra: #060b16;
+  }
+  .scelte button.scelta { background: #1e293b; color: #93c5fd; }
+}
+
+/* --- fascia "stai guardando una copia": PC spento, sola lettura --- */
+.fascia-copia {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+  background: #b45309;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 14px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fascia-copia + .testa { top: 0; }
+.fascia-copia button {
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .6);
+  background: transparent;
+  color: #fff;
+}
+
+/* bottone secondario, per "cambia indirizzo del deposito" */
+button.btn.grigio {
+  background: transparent;
+  color: var(--tenue);
+  border: 1px solid var(--bordo);
+  font-size: 15px;
+  padding: 12px;
+}
+
+/* la schermata "trova il deposito" riusa .accesso ma con testo normale */
+.accesso input[type="text"] {
+  font-size: 20px;
+  letter-spacing: normal;
+  font-weight: 600;
+}
+
+/* --- scelta da elenco: sostituisce il datalist nativo, che su Android
+       si posizionava male e si sovrapponeva alla pagina --- */
+.scelta { position: relative; display: flex; align-items: center; }
+.scelta input { padding-right: 44px; }
+.scelta-apri {
+  position: absolute;
+  right: 6px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--tenue);
+  font-size: 18px;
+  line-height: 1;
+}
+.scelta-elenco {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 58vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.scelta-voce {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 17px;
+  padding: 14px 12px;
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  background: var(--carta);
+  color: var(--testo);
+}
+.scelta-voce:active { background: var(--sfondo); }
+
+/* --- pillole di stato: giacenza lunga, abbonato, ticket --- */
+.pillola {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--sfondo);
+  border: 1px solid var(--bordo);
+  white-space: nowrap;
+}
+.pillola.blu { background: #eff6ff; border-color: var(--blu); color: var(--blu); }
+.pillola.giallo { background: #fef3c7; border-color: #d97706; color: #92400e; }
+.pillola.verde { background: #ecfdf5; border-color: var(--verde); color: var(--verde); }
+.pillole { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+/* --- sezioni richiudibili dentro un foglio --- */
+details.sezione {
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  padding: 6px 12px;
+  margin: 10px 0;
+  background: var(--carta);
+}
+details.sezione > summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px 0;
+  font-size: 17px;
+}
+
+/* --- riga con interruttore --- */
+.riga-interruttore {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+.riga-interruttore input[type="checkbox"] { width: 22px; height: 22px; flex: 0 0 auto; }
+
+/* --- sotto-schede dentro una schermata (Cassa: giorno / mese / attesa) --- */
+.sotto-schede {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+}
+.sotto-schede button {
+  flex: 1 0 auto;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--bordo);
+  background: var(--carta);
+  color: var(--tenue);
+  white-space: nowrap;
+}
+.sotto-schede button.attiva { background: var(--blu); border-color: var(--blu); color: #fff; }
+
+/* --- elenco del menu "Altro" --- */
+.menu-altro { display: flex; flex-direction: column; gap: 8px; }
+.menu-altro button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 16px 14px;
+  border: 1px solid var(--bordo);
+  border-radius: 14px;
+  background: var(--carta);
+  color: var(--testo);
+}
+.menu-altro button .ico { font-size: 22px; }
+
+/* --- barre delle statistiche --- */
+.barre { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin: 10px 0; }
+.barre div { flex: 1; background: var(--blu); border-radius: 3px 3px 0 0; min-height: 2px; }
+
+/* --- calendario mensile --- */
+.calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendario-testa {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tenue);
+  padding-bottom: 4px;
+}
+.calendario-giorno {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: inherit;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  background: var(--carta);
+  color: var(--testo);
+  padding: 2px;
+}
+.calendario-giorno:disabled { opacity: .45; }
+.calendario-giorno .numero { font-size: 16px; font-weight: 700; }
+.calendario-giorno .punti { font-size: 10px; color: var(--tenue); line-height: 1; }
+.calendario-giorno.oggi { border-color: var(--blu); border-width: 2px; }
+
+/* Righe di avviso sotto un campo: targa gia passata, abbonato, listino vuoto. */
+.nota-riga {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--tenue);
+}
+.nota-riga.giallo { color: #92400e; font-weight: 700; }
+
+/* Maggiorazione aggiunta al volo: nome a sinistra, crocetta per toglierla. */
+.riga-extra {
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  background: var(--carta);
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 15px;
+}
+.riga-extra .via {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--bordo);
+  background: var(--sfondo);
+  color: var(--rosso);
+  font-size: 16px;
+  font-family: inherit;
+}
+
+/* ============ Comodità di scrittura ============ */
+
+/* La ✕ che svuota un campo di ricerca (componenti/comodita.js). */
+.con-crocetta { position: relative; display: block; }
+.con-crocetta input { padding-right: 46px; }
+.crocetta {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bordo);
+  color: var(--tenue);
+  font-size: 15px;
+  line-height: 1;
+  font-family: inherit;
+}
+.crocetta:active { background: #cbd5e1; }
+
+/* Il campo a fuoco si vede da lontano, anche col sole sul piazzale. */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--blu);
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, .16);
+}
+input, select, textarea { transition: border-color .12s, box-shadow .12s; }
+input::placeholder, textarea::placeholder { color: #94a3b8; }
+
+/* Il cursore nei campi importo si vede: sapere che il campo è "acceso" conta
+   più della finzione del registratore di cassa. */
+input.campo-euro { caret-color: var(--blu); }
+
+/* Un tocco su una card si sente. */
+.card.tocca { transition: transform .06s, box-shadow .12s; }
+.card.tocca:active { transform: scale(.985); }
+button.btn { transition: filter .12s, transform .06s; }
+
+/* Nessun campo sotto i 16px: sotto quella soglia il telefono zooma da solo
+   appena ci si tocca dentro, e la pagina resta storta. */
+input, select, textarea { font-size: max(17px, 1rem); }
+
+/* ============ Anteprima dei report e PDF ============ */
+
+.velo-documento {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--sfondo);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+body.documento-aperto { overflow: hidden; }
+
+.documento-stampa {
+  background: #fff;
+  color: #0f172a;
+  padding: 18px 14px calc(24px + var(--sicura-sotto));
+  min-height: 100%;
+}
+.documento-stampa h1 {
+  font-size: 20px;
+  margin: 0 0 2px;
+  letter-spacing: .5px;
+}
+.documento-stampa h2 {
+  font-size: 16px;
+  margin: 22px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #0f172a;
+}
+.documento-sottotitolo { margin: 0 0 14px; font-size: 13px; color: #475569; line-height: 1.35; }
+
+.documento-riepilogo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.documento-riepilogo > div {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.documento-riepilogo .etichetta { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: .4px; }
+.documento-riepilogo .valore { font-size: 17px; font-weight: 700; margin-top: 2px; }
+
+/* la tabella scorre di lato: su uno schermo stretto spezzarla la renderebbe
+   illeggibile, e le colonne devono restare quelle del PC */
+.documento-tabella { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.documento-stampa table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.documento-stampa th, .documento-stampa td {
+  border: 1px solid #cbd5e1;
+  padding: 5px 7px;
+  text-align: left;
+  white-space: nowrap;
+}
+.documento-stampa th { background: #f1f5f9; font-weight: 700; }
+.documento-stampa td.euro, .documento-stampa th.euro { text-align: right; font-variant-numeric: tabular-nums; }
+.documento-stampa tr.totale td { font-weight: 800; background: #f8fafc; border-top: 2px solid #0f172a; }
+.documento-vuoto { color: #64748b; font-style: italic; margin: 6px 0 0; }
+.documento-nota { font-size: 12px; color: #475569; margin: 8px 0 0; line-height: 1.4; }
+
+.documento-comandi { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+
+/* ============ Che cosa finisce nel PDF ============
+   Il sistema stampa TUTTA la pagina: qui si lascia solo il report, senza
+   veli, barre, bottoni. Le tabelle smettono di scorrere e si stampano intere. */
+@media print {
+  body { background: #fff; }
+  body > *:not(.velo-documento) { display: none !important; }
+  .velo-documento { position: static; overflow: visible; background: #fff; }
+  .documento-stampa { padding: 0; }
+  .documento-comandi { display: none !important; }
+  .documento-tabella { overflow: visible; }
+  .documento-stampa table { font-size: 10px; }
+  .documento-stampa th, .documento-stampa td { white-space: normal; }
+  .documento-riepilogo { grid-template-columns: repeat(4, 1fr); }
+  h2, tr { break-inside: avoid; }
+}
+.documento-piede { margin: 18px 0 0; text-align: center; font-size: 13px; color: #475569; }
+
+/* ============ Aggiornamento dell'app ============ */
+
+/* Fascia in cima quando c'è una versione nuova. Deliberatamente STATICA:
+   `monta()` la ricrea ogni cinque secondi, e un'animazione ripartirebbe di
+   continuo sembrando un lampeggio. */
+.fascia-aggiornamento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-top, 0px));
+  background: var(--verde);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.fascia-aggiornamento span { flex: 1; }
+.fascia-aggiornamento button {
+  border: none;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  background: #fff;
+  color: var(--verde);
+}
+.fascia-aggiornamento button.tenue {
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  opacity: .85;
+}
+.fascia-aggiornamento + .testa { top: 0; }
+
+.barra-avanzamento {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--bordo);
+  overflow: hidden;
+  margin: 12px 0 6px;
+}
+.barra-avanzamento div {
+  height: 100%;
+  width: 0;
+  background: var(--verde);
+  transition: width .2s;
+}
+
+/* Avviso: due schede per lo stesso cliente. Giallo, perché è una cosa da
+   sistemare, non un errore. */
+.avviso-doppione {
+  border-left: 4px solid #d97706;
+  background: #fffbeb;
+}
+
+/* --- la Home: la giornata a colpo d'occhio ------------------------------- */
+
+/* Saluto e data. Il margine negativo lo attacca alla barra blu in cima, così
+   sembrano un pezzo solo invece di due strisce staccate. */
+.casa-testa {
+  margin: -4px 0 14px;
+}
+.casa-testa h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.4px;
+}
+.casa-testa p { margin: 2px 0 0; }
+
+/* I tre numeri. Su una riga sola: sono pochi e vanno letti insieme, senza
+   scorrere. Se il terzo non c'è, i due rimasti si allargano da soli. */
+.casa-numeri {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.casa-numero {
+  flex: 1.1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  font-family: inherit;
+  text-align: left;
+  padding: 13px 12px;
+  border: 1px solid var(--bordo);
+  border-radius: 16px;
+  background: var(--carta);
+  color: var(--testo);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .06);
+  transition: transform .06s;
+}
+.casa-numero.stretto { flex: .8 1 0; }
+.casa-numero:active { transform: scale(.97); }
+.casa-numero .ico { font-size: 17px; line-height: 1; }
+.casa-numero .valore {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+  /* l'importo non va mai a capo: meglio stretto che spezzato su due righe */
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+.casa-numero .valore.lungo { font-size: 17px; }
+.casa-numero .valore.minuto { font-size: 15px; }
+.casa-numero .etichetta {
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--tenue);
+}
+
+/* Le due cose che si fanno cento volte al giorno: pollice in basso, bottoni
+   grossi, uno sotto l'altro perché affiancati si sbaglia bersaglio. */
+.casa-azioni { margin-bottom: 4px; }
+.casa-azioni .btn { margin-top: 10px; }
+.btn.casa-storico { margin-top: 0; }
+
+/* «Da guardare»: la striscia colorata a sinistra dice quanto scotta senza
+   colorare tutta la scheda, che di notte darebbe fastidio. */
+.casa-avviso {
+  padding: 13px 14px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--bordo);
+}
+.casa-avviso.rosso { border-left-color: var(--rosso); }
+.casa-avviso.giallo { border-left-color: #d97706; }
+.casa-avviso .riga span:first-child { line-height: 1.35; }
+
+@media (prefers-color-scheme: dark) {
+  /* i gialli chiari qui sopra sono pensati per il fondo bianco: al buio
+     restano solo bordo e testo */
+  .avviso-doppione { background: var(--carta); }
+}
+
+/* Schermi stretti davvero (SE, telefoni vecchi): i numeri si accorciano
+   prima di sfondare la riga. */
+@media (max-width: 359px) {
+  .casa-numero { padding: 11px 9px; }
+  .casa-numero .valore { font-size: 19px; }
+  .casa-numero .valore.lungo { font-size: 15px; }
+  .casa-numero .valore.minuto { font-size: 13px; }
+}
